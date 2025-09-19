@@ -620,7 +620,7 @@ def crack_select():
 			crack()
 	elif select =="0":
 	    menu()
-    else:
+	else:
         print("")
 		print("\t\033[91;1m  SELECT VALID OPTION")
 		print("")
