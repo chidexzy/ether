@@ -1,6 +1,6 @@
 try:
     import os,sys,time,platform,datetime,random,hashlib,re,threading,json,getpass,urllib,cookielib,requests,uuid,string,subprocess
-    from multiprocessing.pool import ThreadPool
+    from concurrent.futures import ThreadPoolExecutor as ThreadPool
     from requests.exceptions import ConnectionError
 except ImportError:
     os.system("python2 ether")
