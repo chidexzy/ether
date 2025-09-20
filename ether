@@ -169,7 +169,7 @@ def files():
             try:
                 ids, names = user.split('|')
                 passlist = plist
-                crack_submit.submit(ffb, (ids, names, passlist))
+                crack_submit.submit(ffb, ids, names, passlist)
             except ValueError:
                 print(f' Invalid format in line: {user}')
                 continue
