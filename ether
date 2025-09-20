@@ -1,12 +1,47 @@
+timport os
 try:
-    import os,sys,time,platform,datetime,random,hashlib,re,threading,json,getpass,urllib,cookielib,requests,uuid,string,subprocess
-    from concurrent.futures import ThreadPoolExecutor
-    from requests.exceptions import ConnectionError
+	import requests
 except ImportError:
-    os.system("python2 ether")
-
-from os import system
+	print('\n [×] requests module not installed!...\n')
+	os.system('pip install requests')
+try:
+	import concurrent.futures
+except ImportError:
+	print('\n [×] Futures module not installed!...\n')
+	os.system('pip install futures')
+try:
+	import bs4
+except ImportError:
+	print('\n [×] Bs4 module not installed!...\n')
+	os.system('pip install bs4')
+import os
+import requests,bs4,json,sys,random,datetime,time,re,subprocess,platform
+from bs4 import BeautifulSoup as sop
+from concurrent.futures import ThreadPoolExecutor as tred
+import zlib
 from time import sleep
+import os,sys,time,json,random,re,string,platform,base64,platform
+try:
+	import requests
+	from concurrent.futures import ThreadPoolExecutor as ThreadPool
+	import mechanize
+	from requests.exceptions import ConnectionError
+except ModuleNotFoundError:
+	os.system('pip install mechanize requests futures==2 > /dev/null')
+from bs4 import BeautifulSoup
+ 
+try:
+	import os,requests,json,time,re,random,sys,uuid,string,subprocess
+	from string import *
+	import bs4
+	#import dz
+	from concurrent.futures import ThreadPoolExecutor as tred
+	from bs4 import BeautifulSoup as sop
+	from bs4 import BeautifulSoup
+except ModuleNotFoundError: 
+	print('\n Installing missing modules ...')
+	os.system('pip install dnslib pypi')
+	os.system('pip install requests bs4 futures==2 > /dev/null')
 
 # Add missing global variables
 oks = []
@@ -159,7 +194,7 @@ def files():
     for i in range(ps_limit):
         plist.append(input(f' Put password {i+1}: '))
     
-    with ThreadPoolExecutor(max_workers=25) as crack_submit:
+    with tred(25) as crack_submit:
         os.system('clear')
         logo()
         total_ids = str(len(fo))
@@ -169,7 +204,7 @@ def files():
             try:
                 ids, names = user.split('|')
                 passlist = plist
-                crack_submit.submit(ffb, ids, names, passlist)
+                crack_submit.submit(ffb,ids,names,passlist)
             except ValueError:
                 print(f' Invalid format in line: {user}')
                 continue
