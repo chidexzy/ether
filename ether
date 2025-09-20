@@ -181,7 +181,7 @@ def files():
     os.system('python2 ether')
 
 def ffb(ids, names, passlist):
-    global loop, oks, cps, okc, cpc  # ✅ Fix 4: Added okc and cpc to global declaration
+    global loop, oks, cps, okc, cpc
     loop += 1
     sys.stdout.write('\r\x1b[1;97m[\033[1;97mCracking\033[1;97m] %s |\x1b[1;92mOK:- %s \x1b[1;97m\r'%(loop,len(oks)))
     sys.stdout.flush()
