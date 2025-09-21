@@ -230,10 +230,6 @@ def files():
 def ffb(ids, names, passlist):
     global loop, oks, cps, okc, cpc
     
-    # Enhancement 7: Random initial delay for each thread
-    initial_delay = random.uniform(0, 5)
-    time.sleep(initial_delay)
-    
     loop += 1
     sys.stdout.write('\r\x1b[1;97m[\033[1;97mCracking\033[1;97m] %s |\x1b[1;92mOK:- %s \x1b[1;97m\r'%(loop,len(oks)))
     sys.stdout.flush()
